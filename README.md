@@ -7,7 +7,9 @@ Vue 2.x directive to react on events outside of an element without stopping the 
 Works well for handling clicks outside of menus and popups. Can handle any DOM event or CustomEvent. Also able to capture jQuery events.
 
 ## Install
-TBD
+```js
+npm install --save vue-outside-events
+```
 
 ## Demos
 Check out the highly contrived demos here: [https://nchutchind.github.io/vue-outside-events/docs/index.html](https://nchutchind.github.io/vue-outside-events/docs/index.html)

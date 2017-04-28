@@ -1,7 +1,7 @@
 {
   "name": "vue-outside-events",
   "version": "0.9.0",
-  "description": "Bind to events triggered by a specific event occurring outside the specified element.",
+  "description": "Vue 2.x directive to help a specified element listen for specific events occurring outside of itself.",
   "main": "dist/vue-outside-events.min.js",
   "scripts": {
     "test": "jest --coverage",
