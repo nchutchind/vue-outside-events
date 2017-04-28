@@ -10,7 +10,7 @@ Works well for handling clicks outside of menus and popups. Can handle any DOM e
 TBD
 
 ## Demos
-Check out the highly contrived demos here: [https://nchutchind.github.io/vue-outside-events/docs/demos.md](https://nchutchind.github.io/vue-outside-events/docs/demos.md)
+Check out the highly contrived demos here: [https://nchutchind.github.io/vue-outside-events/docs/index.html](https://nchutchind.github.io/vue-outside-events/docs/index.html)
 
 ## Use
 

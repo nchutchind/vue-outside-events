@@ -7,8 +7,8 @@
     "test": "jest --coverage",
     "cover": "opn coverage/lcov-report/index.html",
     "build": "rollup -c",
-    "lint": "standard",
-    "lint:fix": "standard --fix",
+    "lint": "standard \"src/*.js\"",
+    "lint:fix": "standard \"src/*.js\" --fix",
     "release": "np"
   },
   "repository": {
