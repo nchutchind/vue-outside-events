@@ -4,7 +4,7 @@ import filesize from 'rollup-plugin-filesize'
 import resolve from 'rollup-plugin-node-resolve'
 
 const pkg = require('./package.json')
-const license = require('rollup-plugin-license');
+const license = require('rollup-plugin-license')
 
 const banner = `/**
  * ${pkg.name} @ ${pkg.version}
@@ -17,10 +17,10 @@ const banner = `/**
 
 export default {
   entry: 'src/index.js',
-  dest: 'dist/v-outside-events.min.js',
+  dest: 'dist/vue-outside-events.min.js',
   format: 'umd',
-  moduleId: 'v-outside-events',
-  moduleName: 'v-outside-events',
+  moduleId: 'vue-outside-events',
+  moduleName: 'vue-outside-events',
   plugins: [
     resolve({
       jsnext: true,

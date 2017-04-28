@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vue-outside-events v-dblclick-outside</title>
+
+	<link href="style.css" type="text/css" rel="stylesheet" />
+	<link href="theme.css" type="text/css" rel="stylesheet" />
+	<script src="syntaxhighlighter.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.min.js" type="text/javascript"></script>
+	<script src="../dist/vue-outside-events.min.js" type="text/javascript"></script>
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+		crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="app">
+		<h2>v-dblclick-outside</h2>
+
+		<p>Start double-clicking. Don't stop. Never stop.</p>
+
+		<div id="test" v-dblclick-outside="onDoubleClickOutside">
+		  test <span class="event-target"></span>
+
+		  <div id="a" v-dblclick-outside="onDoubleClickOutside">
+			  a <span class="event-target"></span>
+			  <div id="b" v-dblclick-outside="onDoubleClickOutside">
+				  b <span class="event-target"></span>
+			  </div>
+		  </div>
+
+		  <div id="c" v-dblclick-outside="onDoubleClickOutside">
+			  c <span class="event-target"></span>
+			  <span id="d" class="bind-me" v-dblclick-outside="onDoubleClickOutside">d <span class="event-target"></span> </span>
+			  <span id="e" class="bind-me" v-dblclick-outside="onDoubleClickOutside">e <span class="event-target"></span> </span>
+		  </div>
+
+		  <div id="f" v-dblclick-outside="onDoubleClickOutside">
+			  f <span class="event-target"></span>
+			  <div id="g" v-dblclick-outside="onDoubleClickOutside">
+				  g <span class="event-target"></span>
+				  <span id="h" class="bind-me" v-dblclick-outside="onDoubleClickOutside">h <span class="event-target"></span> </span>
+				  <span id="i" class="bind-me" v-dblclick-outside="onDoubleClickOutside">i <span class="event-target"></span> </span>
+			  </div>
+		  </div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function() {
+			$(document)
+				.on( 'dblclick', function(event){
+					$('#test, #test div, #test .bind-me')
+						.removeClass( 'event-outside' )
+						.children( '.event-target' )
+						.text( ' ' );
+				});
+
+
+			new Vue({
+				el: '#app',
+				methods: {
+					onDoubleClickOutside(e, elem) {
+						var el = $(elem),
+							target = $(e.target),
+							text = 'DoubleClicked: ' + target[0].tagName.toLowerCase()
+									+ ( target.attr('id') ? '#' + target.attr('id') : target.attr('class') ? '.' + target.attr('class').replace( / /g, '.' ) : ' ' );
+
+						el
+							.addClass( 'event-outside' )
+							.children( '.event-target' )
+							.text( text );
+					}
+				}
+			});
+		});
+	</script>
+
+	<h3 style="border-bottom: 2px solid black;">v-dblclick-outside example</h3>
+	<pre class="brush: javascript,xml; html-script: true">
+		<template>
+			<div v-dblclick-outside="onDoubleClickOutside"></div>
+		</template>
+
+		<script>
+			export default {
+				methods: {
+					onDoubleClickOutside(e, el) {
+						console.log("onDoubleClickOutside");
+						console.log("Event:", e);
+						console.log("Element double-clicked on:", e.target);
+						console.log("Element double-clicked outside of:", el);
+					}
+				}
+			}
+		</script>
+	</pre>
+</body>
+</html>
+

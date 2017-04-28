@@ -1,0 +1,83 @@
+#test,
+#test div {
+  padding: 1em;
+  margin-top: 1em;
+}
+
+#test .bind-me {
+  padding: 0.5em;
+  margin-left: 0.5em;
+  white-space: nowrap;
+  line-height: 1.5em;
+}
+
+#test,
+#test div,
+#test .bind-me {
+  color: #ccc;
+  border: 2px solid #ccc;
+}
+
+.event-outside {
+  color: #0a0 !important;
+  border-color: #0a0 !important;
+  background-color: #cfc !important;
+}
+
+input.outside,
+#test input {
+  font-size: 10px;
+  border: 1px solid #000;
+  padding: 0.1em 0.3em;
+  width: 50px;
+}
+
+#test .bind-me,
+.event-target {
+  display: inline-block;
+  width: 150px;
+  overflow: hidden;
+  white-space: pre;
+  vertical-align: middle;
+}
+
+#test .bind-me {
+  width: 180px;
+}
+
+.origin {
+  border: 2px solid red !important;
+}
+
+.pre {
+  font-family: monospace;
+  font-weight: normal;
+  background-color: #eee;
+}
+
+button {
+  height: 40px;
+  width: 75px;
+}
+
+.active {
+  border: 1px solid #2dc902;
+  font-weight:bold;
+}
+
+
+.controls .speed {
+  display: inline-block;
+  width:225px;
+  padding:15px;
+}
+.controls .type {
+  display: inline-block;
+  width:240;
+  padding:15px;
+}
+
+.controls .type-example {
+  display:inline-block;
+  padding:15px;
+}

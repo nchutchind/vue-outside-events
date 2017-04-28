@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vue-outside-events v-submit-outside</title>
+
+	<link href="style.css" type="text/css" rel="stylesheet" />
+	<link href="theme.css" type="text/css" rel="stylesheet" />
+	<script src="syntaxhighlighter.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.min.js" type="text/javascript"></script>
+	<script src="../dist/vue-outside-events.min.js" type="text/javascript"></script>
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+		crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="app">
+		<h2>v-submit-outside</h2>
+
+		<p>If you thought the submit event got fired from a submit button, you'd be embarrassingly wrong. It fires from the form that was submitted.</p>
+		<p><sub>(Hint: In this totally real-world example, submit the many forms on this page by clicking the buttons scattered around.)</sub></p>
+
+		<form id="outside" onsubmit="return false">
+			<input class="outside" id="outside" type="submit" value="outside">
+		</form>
+		<div id="test" v-submit-outside="onSubmitOutside">
+  			<form id="top" onsubmit="return false">
+  				<input type="submit" value="top">
+  			</form>
+  			<span class="event-target"> </span>
+			<div v-submit-outside="onSubmitOutside">
+				<form id="a" onsubmit="return false">
+					<input type="submit" value="a">
+				</form>
+				<span class="event-target"> </span>
+				<div id="b" v-submit-outside="onSubmitOutside">
+					<form id="b" onsubmit="return false">
+						<input type="submit" value="b">
+					</form>
+					<span class="event-target"> </span>
+				</div>
+			</div>
+			<div v-submit-outside="onSubmitOutside">
+				<form id="c" onsubmit="return false">
+					<input type="submit" value="c">
+				</form>
+				<span class="event-target"> </span>
+				<span class="bind-me" v-submit-outside="onSubmitOutside">
+					<form id="d" onsubmit="return false">
+						<input type="submit" value="d">
+					</form>
+					<span class="event-target"></span>
+				</span>
+				<span class="bind-me" v-submit-outside="onSubmitOutside">
+					<form id="e" onsubmit="return false">
+						<input type="submit" value="e">
+					</form>
+					<span class="event-target"></span>
+				</span>
+			</div>
+			<div v-submit-outside="onSubmitOutside">
+				<form id="f" onsubmit="return false">
+					<input type="submit" value="f">
+				</form>
+				<span class="event-target"> </span>
+				<div v-submit-outside="onSubmitOutside">
+					<form id="g" onsubmit="return false">
+						<input type="submit" value="g">
+					</form>
+					<span class="event-target"> </span>
+					<span class="bind-me" v-submit-outside="onSubmitOutside">
+						<form id="h" onsubmit="return false">
+							<input type="submit" value="h">
+						</form>
+						<span class="event-target"></span>
+					</span>
+					<span class="bind-me" v-submit-outside="onSubmitOutside">
+						<form id="i" onsubmit="return false">
+							<input type="submit" value="i">
+						</form>
+						<span class="event-target"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(function() {
+			$(document)
+				.on( 'submit', function(event){
+					$('#test, #test div, #test .bind-me')
+						.removeClass( 'event-outside' )
+						.children( '.event-target' )
+						.text( ' ' );
+				});
+
+
+			new Vue({
+				el: '#app',
+				methods: {
+					onSubmitOutside(e, elem) {
+						var el = $(elem),
+							target = $(e.target),
+							text = 'Submit: ' + target[0].tagName.toLowerCase()
+									+ ( target.attr('id') ? '#' + target.attr('id') : target.attr('class') ? '.' + target.attr('class').replace( / /g, '.' ) : ' ' );
+
+						el
+							.addClass( 'event-outside' )
+							.children( '.event-target' )
+							.text( text );
+					}
+				}
+			});
+		});
+	</script>
+
+	<h3 style="border-bottom: 2px solid black;">v-submit-outside example</h3>
+	<pre class="brush: javascript; html-script: true">
+		<template>
+			<div v-submit-outside="onSubmitOutside"></div>
+		</template>
+
+		&lt;script&gt;
+			export default {
+				methods: {
+					onSubmitOutside(e, el) {
+						console.log("onSubmitOutside");
+						console.log("Event:", e);
+						console.log("Form that was submitted:", e.target);
+						console.log("Element totally into submission:", el);
+					}
+				}
+			}
+		&lt;/script&gt;
+	</pre>
+</body>
+</html>
+
