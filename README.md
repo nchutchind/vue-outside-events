@@ -22,7 +22,7 @@ import vOutsideEvents from 'vue-outside-events'
 Vue.use(vOutsideEvents)
 ```
 
-```js
+```html
 <script>
   export default {
     methods: {
@@ -49,7 +49,7 @@ Vue.use(vOutsideEvents)
 ```
 
 ### Scripts
-```js
+```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.min.js" type="text/javascript"></script>
 <script src="js/v-outside-events.min.js" type="text/javascript"></script>
 
@@ -102,7 +102,7 @@ Vue.use(vOutsideEvents)
 ## Modifiers
 Add the `jquery` modifier to allow the directive to handle jQuery triggering of custom events. jQuery must be present in the window for this to work.
 
-```js
+```html
 <div id="myDiv1" v-event-outside="{ name: 'onFoo', handler: onFooOutside }"></div>
 <div id="myDiv2" v-event-outside.jquery="{ name: 'onFoo', handler: onFooOutside }"></div>
 
