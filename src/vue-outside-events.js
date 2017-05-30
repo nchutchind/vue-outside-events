@@ -8,17 +8,29 @@ const createOutsideEvent = (directiveName, eventName) => {
 
   outsideEvent.bind = function (el, binding, vNode) {
     const err = console.error !== undefined ? console.error : console.log
+    let fn = null;
+    let extras = undefined;
     if (typeof binding.value !== 'function') {
-      let error = `[${directiveName}]: provided expression '${binding.expression}' must be a function.`
-      if (vNode.context.name) {
-        error += `\nFound in component '${vNode.context.name}'`
+      if (typeof binding.value !== 'object' || !binding.value.hasOwnProperty('handler') || typeof binding.value["handler"] !== "function") {
+        let error = `[${directiveName}]: provided expression '${binding.expression}' must be a function or an object containing a property named 'handler' that is a function.`
+        if (vNode.context.name) {
+          error += `\nFound in component '${vNode.context.name}'`
+        }
+        err(error)
+      } else {
+        fn = binding.value["handler"];
+        // clone the object passed in and remove the handler from it
+        extras = Object.assign({}, binding.value);
+        delete extras["handler"];
       }
-      err(error)
+    } else {
+      fn = binding.value;
     }
 
     const handler = (e) => {
       if (!el.contains(e.target) && el !== e.target) {
-        binding.value(e, el)
+        // call the handler with the event, the element we are bound to, and the extras object
+        fn(e, el, extras)
       }
     }
 
@@ -38,6 +50,7 @@ export const CustomEventOutside = {
   directiveName: 'event-outside',
   bind: function (el, binding, vNode) {
     const err = console.error !== undefined ? console.error : console.log
+    let extras = undefined;
     if (
       // object is required
       typeof binding.value !== 'object' ||
@@ -51,6 +64,10 @@ export const CustomEventOutside = {
       }
       err(error)
       return
+    } else {
+      extras = Object.assign({}, binding.value);
+      delete extras.name;
+      delete extras.handler;
     }
     if ((binding.modifiers.jquery) && (window.$ === undefined && window.jQuery === undefined)) {
       let error = `[v-event-outside]: jQuery is not present in window.`
@@ -63,7 +80,7 @@ export const CustomEventOutside = {
 
     const handler = (e) => {
       if (!el.contains(e.target) && el !== e.target) {
-        binding.value.handler(e, el)
+        binding.value.handler(e, el, extras)
       }
     }
     el.__vueEventOutside__ = handler
