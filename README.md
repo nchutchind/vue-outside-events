@@ -31,13 +31,13 @@ Vue.use(vOutsideEvents)
       onClickOutside (e, el) {
         console.log('onClickOutside');
         console.log('click heard outside element: ', el);
-        console.log('element clicked: '. e.target);
+        console.log('element clicked: ', e.target);
         console.log('event: ', e);
       },
       onMouseOutside (e, el) {
         console.log('onMouseOutside');
         console.log('mouse moved outside element: ', el);
-        console.log('element mouse moved over: '. e.target);
+        console.log('element mouse moved over: ', e.target);
         console.log('event: ', e);
       }
     }
@@ -67,13 +67,13 @@ Vue.use(vOutsideEvents)
 			onClickOutside (e, el) {
 				console.log('onClickOutside');
 				console.log('click heard outside element: ', el);
-				console.log('element clicked: '. e.target);
+				console.log('element clicked: ', e.target);
 				console.log('event: ', e);
 			},
 			onMouseOutside (e, el) {
 				console.log('onMouseOutside');
 				console.log('mouse moved outside element: ', el);
-				console.log('element mouse moved over: '. e.target);
+				console.log('element mouse moved over: ', e.target);
 				console.log('event: ', e);
 			}
 		}
