@@ -39,15 +39,15 @@ Vue.use(vOutsideEvents)
         console.log('mouse moved outside element:', el);
         console.log('element mouse moved over:', e.target);
         console.log('event:', e);
-			},
-			onFoo (e, el, extras) {
-				console.log('onFoo');
+      },
+      onFoo (e, el, extras) {
+        console.log('onFoo');
         console.log('fooEvent happened outside element:', el);
         console.log('element that triggered foo:', e.target);
-				console.log('event:', e);
-				console.log('extras:', extras);
-				console.log('bar:', extras.bar);
-			}
+        console.log('event:', e);
+        console.log('extras:', extras);
+        console.log('bar:', extras.bar);
+      }
     }
   };
 </script>
@@ -94,8 +94,8 @@ Vue.use(vOutsideEvents)
         console.log('extras:', extras);
         console.log('bar:', extras.bar);
       }
-		}
-	});
+    }
+  });
 </script>
 ```
 
