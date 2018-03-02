@@ -16,20 +16,20 @@ const banner = `/**
  */`
 
 export default {
-  entry: 'src/index.js',
-  dest: 'dist/vue-outside-events.min.js',
-  format: 'umd',
-  moduleId: 'vue-outside-events',
-  moduleName: 'vue-outside-events',
+  input : 'src/index.js',
+  output: {
+    name  : 'vue-outside-events',
+    format: 'umd',
+    file  : 'dist/vue-outside-events.min.js'
+  },
   plugins: [
     resolve({
-      jsnext: true,
-      main: true,
+      jsnext : true,
+      main   : true,
       browser: true
     }),
     babel({
-      babelrc: false,
-      presets: ['es2015-rollup']
+      babelrc: true,
     }),
     uglify(),
     filesize(),

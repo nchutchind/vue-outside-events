@@ -30,16 +30,24 @@ Vue.use(vOutsideEvents)
     methods: {
       onClickOutside (e, el) {
         console.log('onClickOutside');
-        console.log('click heard outside element: ', el);
-        console.log('element clicked: ', e.target);
-        console.log('event: ', e);
+        console.log('click heard outside element:', el);
+        console.log('element clicked:', e.target);
+        console.log('event:', e);
       },
       onMouseOutside (e, el) {
         console.log('onMouseOutside');
-        console.log('mouse moved outside element: ', el);
-        console.log('element mouse moved over: ', e.target);
-        console.log('event: ', e);
-      }
+        console.log('mouse moved outside element:', el);
+        console.log('element mouse moved over:', e.target);
+        console.log('event:', e);
+			},
+			onFoo (e, el, extras) {
+				console.log('onFoo');
+        console.log('fooEvent happened outside element:', el);
+        console.log('element that triggered foo:', e.target);
+				console.log('event:', e);
+				console.log('extras:', extras);
+				console.log('bar:', extras.bar);
+			}
     }
   };
 </script>
@@ -47,6 +55,7 @@ Vue.use(vOutsideEvents)
 <template>
   <div v-click-outside="onClickOutside"></div>
   <div v-mousemove-outside="onMouseOutside"></div>
+  <div v-event-outside="{ name: 'fooEvent', handler: onFoo, bar: 'baz' }"></div>
 </template>
 ```
 
@@ -58,24 +67,33 @@ Vue.use(vOutsideEvents)
 <div id="app">
   <div v-click-outside="onClickOutside"></div>
   <div v-mousemove-outside="onMouseOutside"></div>
+  <div v-event-outside="{ name: 'fooEvent', handler: onFoo, bar: 'baz' }"></div>
 </div>
 
 <script>
-	new Vue({
-		el: '#app',
-		methods: {
-			onClickOutside (e, el) {
-				console.log('onClickOutside');
-				console.log('click heard outside element: ', el);
-				console.log('element clicked: ', e.target);
-				console.log('event: ', e);
-			},
-			onMouseOutside (e, el) {
-				console.log('onMouseOutside');
-				console.log('mouse moved outside element: ', el);
-				console.log('element mouse moved over: ', e.target);
-				console.log('event: ', e);
-			}
+  new Vue({
+    el: '#app',
+    methods: {
+      onClickOutside (e, el) {
+        console.log('onClickOutside');
+        console.log('click heard outside element:', el);
+        console.log('element clicked:', e.target);
+        console.log('event:', e);
+      },
+      onMouseOutside (e, el) {
+        console.log('onMouseOutside');
+        console.log('mouse moved outside element:', el);
+        console.log('element mouse moved over:', e.target);
+        console.log('event:', e);
+      },
+      onFoo (e, el, extras) {
+        console.log('onFoo');
+        console.log('fooEvent happened outside element:', el);
+        console.log('element that triggered foo:', e.target);
+        console.log('event:', e);
+        console.log('extras:', extras);
+        console.log('bar:', extras.bar);
+      }
 		}
 	});
 </script>
@@ -101,6 +119,24 @@ Vue.use(vOutsideEvents)
 | Submit             | submit      | v-submit-outside     | ="handlerName"                                 |
 | Custom             | "eventName" | v-event-outside      | ="{ name: 'eventName', handler: handlerName }" |
 
+## Extras
+Add additional key/value pairs to the custom event to pass data to the event handler.
+
+```html
+<div v-event-outside="{ name: 'fooEvent', handler: onFoo, bar: 'baz' }"></div>
+```
+
+```js
+onFoo (e, el, extras) {
+  console.log('onFoo');
+  console.log('fooEvent happened outside element:', el);
+  console.log('element that triggered foo:', e.target);
+  console.log('event:', e);
+  console.log('extras:', extras);
+  console.log('bar:', extras.bar);
+}
+```
+
 ## Modifiers
 Add the `jquery` modifier to allow the directive to handle jQuery triggering of custom events. jQuery must be present in the window for this to work.
 
@@ -109,11 +145,11 @@ Add the `jquery` modifier to allow the directive to handle jQuery triggering of 
 <div id="myDiv2" v-event-outside.jquery="{ name: 'onFoo', handler: onFooOutside }"></div>
 
 <script>
-	$(document).trigger("onFoo"); // onFooOutside will be called for #myDiv2, but not #myDiv1
+  $(document).trigger("onFoo"); // onFooOutside will be called for #myDiv2, but not #myDiv1
 
-	var event = document.createEvent('Event');
-	event.initEvent('onFoo', true, true);
-	document.dispatchEvent(event); // onFooOutside will be called for #myDiv1 and #myDiv2
+  var event = document.createEvent('Event');
+  event.initEvent('onFoo', true, true);
+  document.dispatchEvent(event); // onFooOutside will be called for #myDiv1 and #myDiv2
 </script>
 ```
 
