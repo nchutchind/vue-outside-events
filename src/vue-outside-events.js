@@ -34,13 +34,13 @@ const createOutsideEvent = (directiveName, eventName) => {
       }
     }
 
-    el.__vueEventOutside__ = handler
+    el[`__vueEventOutside__${eventName}`] = handler
     document.addEventListener(eventName, handler)
   }
 
   outsideEvent.unbind = function (el, binding) {
-    document.removeEventListener(eventName, el.__vueEventOutside__)
-    el.__vueEventOutside__ = null
+    document.removeEventListener(eventName, el[`__vueEventOutside__${eventName}`])
+    el[`__vueEventOutside__${eventName}`] = null
   }
 
   return outsideEvent
@@ -83,7 +83,7 @@ export const CustomEventOutside = {
         binding.value.handler(e, el, extras)
       }
     }
-    el.__vueEventOutside__ = handler
+    el[`__vueEventOutside__${binding.value.name}`] = handler
     if (binding.modifiers.jquery) {
       jQuery(document).on(binding.value.name, handler)
     } else {
@@ -93,12 +93,12 @@ export const CustomEventOutside = {
 
   unbind: function (el, binding) {
     if (binding.modifiers.jquery) {
-      jQuery(document).off(binding.value.name, el.__vueEventOutside__)
+      jQuery(document).off(binding.value.name, el[`__vueEventOutside__${binding.value.name}`])
     } else {
-      document.removeEventListener(binding.value.name, el.__vueEventOutside__)
+      document.removeEventListener(binding.value.name, el[`__vueEventOutside__${binding.value.name}`])
     }
 
-    el.__vueEventOutside__ = null
+    el[`__vueEventOutside__${binding.value.name}`] = null
   }
 }
 
