@@ -3,6 +3,7 @@
   "version": "1.1.3",
   "description": "Vue 2.x directive to help a specified element listen for specific events occurring outside of itself.",
   "main": "dist/vue-outside-events.min.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "jest --coverage",
     "cover": "opn coverage/lcov-report/index.html",
