@@ -45,3 +45,22 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default plugin
+
+export {
+  ClickOutside,
+  DblClickOutside,
+  FocusOutside,
+  BlurOutside,
+  MouseMoveOutside,
+  MouseDownOutside,
+  MouseUpOutside,
+  MouseOverOutside,
+  MouseOutOutside,
+  ChangeOutside,
+  SelectOutside,
+  SubmitOutside,
+  KeyDownOutside,
+  KeyPressOutside,
+  KeyUpOutside,
+  CustomEventOutside
+}
