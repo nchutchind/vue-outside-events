@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "target": "es2016",
+    "outDir": "dist",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "esModuleInterop": true,
+    //"declaration": true,
+    //"emitDeclarationOnly": true,
+    //"isolatedModules": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "sourceMap": false,
+    "alwaysStrict": true,
+    "allowUnreachableCode": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": ["./src/**/*.ts", "src/vue-outside-events.tsBAK"],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*"
+  ]
+}

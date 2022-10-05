@@ -1,8 +1,6 @@
 # vue-outside-events
 
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-
-Vue 2.x directive to react on events outside of an element without stopping the event's propagation.
+Vue 2.x and 3.x collection of directives to react on events outside of an element without stopping the event's propagation.
 
 Works well for handling clicks outside of menus and popups. Can handle any DOM event or CustomEvent. Also able to capture jQuery events.
 
@@ -123,7 +121,7 @@ Vue.use(vOutsideEvents)
 Add additional key/value pairs to the custom event to pass data to the event handler.
 
 ```html
-<div v-event-outside="{ name: 'fooEvent', handler: onFoo, bar: 'baz' }"></div>
+<div v-event-outside="{ name: 'fooEvent', handler: onFoo, options: { extras: { bar: 'baz' }}}"></div>
 ```
 
 ```js
@@ -155,6 +153,3 @@ Add the `jquery` modifier to allow the directive to handle jQuery triggering of 
 
 ## License
 [MIT License](https://github.com/nchutchind/vue-outside-events/blob/master/LICENSE)
-
-## Style
-[![Standard - JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
