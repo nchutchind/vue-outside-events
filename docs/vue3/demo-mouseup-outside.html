@@ -7,7 +7,7 @@
 	<link href="../theme.css" type="text/css" rel="stylesheet" />
 	<script src="../syntaxhighlighter.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@3.2.40/dist/vue.global.prod.js" type="text/javascript"></script>
-	<script src="../../dist/vue-outside-events.min.js" type="text/javascript"></script>
+	<script src="../../dist/vue-outside-events.umd.min.js" type="text/javascript"></script>
 	<script
 		src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
@@ -55,7 +55,7 @@
 					.text( ' ' );
 			}, { capture: true });
 
-			const { mouseupOutsideName, vMouseupOutside, useMouseupOutside } = vueOutsideEvents;
+			const { mouseupOutsideName, vMouseupOutside, onMouseupOutside } = vueOutsideEvents;
 			const { createApp, ref } = Vue;
 
 			createApp({
@@ -74,10 +74,10 @@
 							.text( text );
 					}
 
-					useMouseupOutside(f, (e, el, extras) => onEventOutside(e, el, extras))
-					useMouseupOutside(g, (e, el, extras) => onEventOutside(e, el, extras))
-					useMouseupOutside(h, (e, el, extras) => onEventOutside(e, el, extras))
-					useMouseupOutside(i, (e, el, extras) => onEventOutside(e, el, extras))
+					onMouseupOutside(f, (e, el, extras) => onEventOutside(e, el, extras))
+					onMouseupOutside(g, (e, el, extras) => onEventOutside(e, el, extras))
+					onMouseupOutside(h, (e, el, extras) => onEventOutside(e, el, extras))
+					onMouseupOutside(i, (e, el, extras) => onEventOutside(e, el, extras))
 
 					return { f,g,h,i, onEventOutside }
 				},
@@ -91,7 +91,7 @@
 	<h3 style="border-bottom: 2px solid black;">v-mouseup-outside example</h3>
 	<pre class="brush: javascript; html-script: true">
 		<template>
-			<div v-mouseup-outside="onMouseUpOutside"></div>
+			&lt;div v-mouseup-outside="onMouseUpOutside"&gt;&lt;/div&gt;
 		</template>
 
 		&lt;script&gt;

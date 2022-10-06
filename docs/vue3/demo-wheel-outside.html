@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vue-outside-events v-click-outside</title>
+
+	<link href="../style.css" type="text/css" rel="stylesheet" />
+	<link href="../theme.css" type="text/css" rel="stylesheet" />
+	<script src="../syntaxhighlighter.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@3.2.40/dist/vue.global.prod.js" type="text/javascript"></script>
+	<script src="../../dist/vue-outside-events.umd.min.js" type="text/javascript"></script>
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+		crossorigin="anonymous"></script>
+  <style>
+    .box {
+      position: relative;
+      border: solid 1px #ccc;
+      width: 250px;
+    }
+    .box > .bg,
+    .box > .counter {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+    .box > .bg {
+      font-size: 250px;
+      color: #dedede;
+    }
+    .box > .counter {
+      font-size: 24px;
+      text-align: center;
+    }
+    .box > .counter td:first-child {
+      text-align:right;
+    }
+    .box > .counter td:last-child {
+      width: 50px;
+    }
+  </style>
+</head>
+<body>
+	<div id="app">
+		<h2>wheel-outside (vue@3.2.40)</h2>
+
+		<p>This is an example of handling whatever event you may want. In this case, I'm checking wheel scrolling.</p>
+
+    <div style="display: flex; flex-direction: horizontal; width: 100%; height: 250px; justify-content: space-evenly;">
+      <div ref="a" class="box">
+        <div class="bg">A</div>
+        <div class="counter">Wheel Scrolls Outside A<br/> <table><tr><td>Up:</td><td>{{outsideACountUp}}</td></tr><tr><td>Down:</td><td>{{outsideACountDown}}</td></tr></table></div>
+      </div>
+      <div class="box" v-wheel-outside="[ onEventOutside, { extras: { boxName: 'b' }}]">
+        <div class="bg">B</div>
+        <div class="counter">Wheel Scrolls Outside B<br/> <table><tr><td>Up:</td><td>{{outsideBCountUp}}</td></tr><tr><td>Down:</td><td>{{outsideBCountDown}}</td></tr></table></div>
+      </div>
+      <div ref="c" class="box">
+        <div class="bg">C</div>
+        <div class="counter">Wheel Scrolls Outside C<br/> <table><tr><td>Up:</td><td>{{outsideCCountUp}}</td></tr><tr><td>Down:</td><td>{{outsideCCountDown}}</td></tr></table></div>
+      </div>
+    </div>
+	</div>
+	<script type="text/javascript">
+		$(function() {
+			const { createOutsideEvent } = vueOutsideEvents;
+			const { createApp, ref } = Vue;
+      const { wheelOutsideName, onWheelOutside, vWheelOutside } = createOutsideEvent( 'wheel' )
+
+			createApp({
+				setup() {
+					const a = ref(null), b = ref(null), c = ref(null)
+          const outsideACountUp = ref(0), outsideBCountUp = ref(0), outsideCCountUp = ref(0),
+                outsideACountDown = ref(0), outsideBCountDown = ref(0), outsideCCountDown = ref(0)
+
+					function onEventOutside(e, elem, extras) {
+            const amountUp = Math.sign( e.deltaY ) < 0 ? 1 : 0;
+            const amountDown = amountUp > 0 ? 0 : 1;
+            eval( `outside${extras.boxName.toUpperCase()}CountUp` ).value += amountUp;
+            eval( `outside${extras.boxName.toUpperCase()}CountDown` ).value += amountDown;
+					}
+
+					onWheelOutside( a, ( e, el, extras ) => onEventOutside( e, el, extras ), { extras: { boxName: 'a' }})
+					//onWheelOutside( b, ( e, el, extras ) => onEventOutside( e, el, extras ), { extras: { boxName: 'b' }})
+					onWheelOutside( c, ( e, el, extras ) => onEventOutside( e, el, extras ), { extras: { boxName: 'c' }})
+
+					return { a, b, c, outsideACountUp, outsideBCountUp, outsideCCountUp, outsideACountDown, outsideBCountDown, outsideCCountDown, onEventOutside }
+				},
+				directives: {
+					[wheelOutsideName]: vWheelOutside
+				},
+			}).mount('#app');
+		})
+	</script>
+
+	<h3 style="border-bottom: 2px solid black;">v-click-outside example</h3>
+	<pre class="brush: javascript,xml; html-script: true">
+		<template>
+      <div ref="foo">{{ box1Count }}</div>
+			<div v-wheel-outside="[onWheelOutside, { extras: { boxName: 'box2' }}]">{{ box2Count }}</div>
+		</template>
+
+		&lt;script setup&gt;
+      import { ref } from 'vue'
+      import { createOutsideEvent } from 'vue-outside-events'
+
+      const { onWheelOutside, vWheelOutside } = createOutsideEvent( 'wheel', 'wheel-outside', 'wheel' )
+			const foo = ref(null), box1Count = ref(0), box2Count = ref(0)
+
+      function onWheelOutside( e, elem, extras ) {
+        const amount = -Math.sign( e.deltaY );
+        if ( extras.boxName === 'box1' ) {
+          box1Count.value += amount;
+        } else {
+          box2Count.value += amount;
+        }
+      }
+
+      onWheelOutside( foo, ( e, el, extras ) => onWheelOutside( e, el, extras ), { extras: { boxName: 'box1' }})
+		&lt;/script&gt;
+	</pre>
+</body>
+</html>
+

@@ -11,8 +11,8 @@
 	</style>
 	<link href="../theme.css" type="text/css" rel="stylesheet" />
 	<script src="../syntaxhighlighter.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vue@3.2.40/dist/vue.global.js" type="text/javascript"></script>
-	<script src="../../dist/vue-outside-events.min.js" type="text/javascript"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@3.2.40/dist/vue.global.prod.js" type="text/javascript"></script>
+	<script src="../../dist/vue-outside-events.umd.min.js" type="text/javascript"></script>
 	<script
 		src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
@@ -57,12 +57,12 @@ randomElement.dispatchEvent(event);
 			</div>
 		</div>
 
-		<div id="test" v-event-outside.jquery="{name: 'customEvent', handler: onEventOutside }">
+		<div id="test" v-foo-outside.jquery="[ name, onEventOutside ]">
 		  test <span class="event-target"></span>
 
-		  <div id="a" v-event-outside.jquery="{name: 'customEvent', handler: onEventOutside }">
+		  <div id="a" v-foo-outside.jquery="onEventOutside">
 			  a <span class="event-target"></span>
-			  <div id="b" v-event-outside.jquery="{name: 'customEvent', handler: onEventOutside }">
+			  <div id="b" v-foo-outside.jquery="[ name, onEventOutside ]">
 				  b <span class="event-target"></span>
 			  </div>
 		  </div>
@@ -73,12 +73,12 @@ randomElement.dispatchEvent(event);
 			  <span id="e" ref="e" class="bind-me">e <span class="event-target"></span> </span>
 		  </div>
 
-		  <div id="f" v-event-outside="{name: 'customEvent', handler: onEventOutside }">
+		  <div id="f" v-event-outside="[ name, onEventOutside]">
 			  f <span class="event-target"></span>
-			  <div id="g" v-event-outside="{name: 'customEvent', handler: onEventOutside }">
+			  <div id="g" v-event-outside="{name, handler: onEventOutside}">
 				  g <span class="event-target"></span>
-				  <span id="h" class="bind-me" v-event-outside="{name: 'customEvent', handler: onEventOutside}">h <span class="event-target"></span> </span>
-				  <span id="i" class="bind-me" v-event-outside="{name: 'customEvent', handler: onEventOutside}">i <span class="event-target"></span> </span>
+				  <span id="h" class="bind-me" v-event-outside="[ name, onEventOutside ]">h <span class="event-target"></span> </span>
+				  <span id="i" class="bind-me" v-event-outside="{name, handler: onEventOutside}">i <span class="event-target"></span> </span>
 			  </div>
 		  </div>
 		</div>
@@ -100,11 +100,14 @@ randomElement.dispatchEvent(event);
 						.text( ' ' );
 				});
 
-			const { customOutsideName, vCustomOutside, useCustomOutside } = vueOutsideEvents;
 			const { createApp, ref, reactive, onMounted } = Vue;
+			const { customOutsideName, onCustomOutside, vCustomOutside } = vueOutsideEvents;
+			const { createOutsideEvent } = vueOutsideEvents;
+			const { fooOutsideEventName, fooOutsideName, onFooOutside, vFooOutside } = createOutsideEvent('customEvent', 'foo-outside', 'foo')
 
 			createApp({
 				setup() {
+					const name = ref(fooOutsideEventName)
 					const c = ref(null), d = ref(null), e = ref(null);
 					// How often to fire events
 					const speed = ref(1000);
@@ -115,9 +118,9 @@ randomElement.dispatchEvent(event);
 					// Are we currently firing or stopped?
 					const playState = ref("playing");
 
-					useCustomOutside( c, onEventOutside, { name: 'customEvent', jquery: true })
-					useCustomOutside( d, onEventOutside, { name: 'customEvent', jquery: true })
-					useCustomOutside( e, onEventOutside, { name: 'customEvent', jquery: true })
+					onFooOutside( c, onEventOutside, { name: 'customEvent', jquery: true })
+					onFooOutside( 'customEvent', d, onEventOutside, { jquery: true })
+					onFooOutside( e, onEventOutside, { name: 'customEvent', jquery: true })
 
 					function onEventOutside(e, elem, extras) {
 						var el = $(elem),
@@ -170,10 +173,11 @@ randomElement.dispatchEvent(event);
 					})
 					
 					return {
-						c, d, e, speed, eventType, playState, onEventOutside, resetInterval, stopInterval
+						name, c, d, e, speed, eventType, playState, onEventOutside, resetInterval, stopInterval
 					}
 				},
 				directives: {
+					[fooOutsideName]: vFooOutside,
 					[customOutsideName]: vCustomOutside
 				},
 			}).mount('#app');

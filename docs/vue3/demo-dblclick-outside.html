@@ -7,7 +7,7 @@
 	<link href="../theme.css" type="text/css" rel="stylesheet" />
 	<script src="../syntaxhighlighter.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@3.2.40/dist/vue.global.prod.js" type="text/javascript"></script>
-	<script src="../../dist/vue-outside-events.min.js" type="text/javascript"></script>
+	<script src="../../dist/vue-outside-events.umd.min.js" type="text/javascript"></script>
 	<script
 		src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
@@ -54,7 +54,7 @@
 					.text( ' ' );
 			}, { capture: true });
 
-			const { dblclickOutsideName, vDblclickOutside, useDblclickOutside } = vueOutsideEvents;
+			const { dblclickOutsideName, vDblclickOutside, onDblclickOutside } = vueOutsideEvents;
 			const { createApp, ref } = Vue;
 
 			createApp({
@@ -73,10 +73,10 @@
 							.text( text );
 					}
 
-					useDblclickOutside(f, (e, el, extras) => onEventOutside(e, el, extras))
-					useDblclickOutside(g, (e, el, extras) => onEventOutside(e, el, extras))
-					useDblclickOutside(h, (e, el, extras) => onEventOutside(e, el, extras))
-					useDblclickOutside(i, (e, el, extras) => onEventOutside(e, el, extras))
+					onDblclickOutside(f, (e, el, extras) => onEventOutside(e, el, extras))
+					onDblclickOutside(g, (e, el, extras) => onEventOutside(e, el, extras))
+					onDblclickOutside(h, (e, el, extras) => onEventOutside(e, el, extras))
+					onDblclickOutside(i, (e, el, extras) => onEventOutside(e, el, extras))
 
 					return { f,g,h,i, onEventOutside }
 				},

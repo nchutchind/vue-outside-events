@@ -1,8 +1,6 @@
 import fs from 'fs'
-import { terser } from 'rollup-plugin-terser'
-import typescript from "@rollup/plugin-typescript";
-import filesize from 'rollup-plugin-filesize'
-const { nodeResolve } = require('@rollup/plugin-node-resolve')
+import dts from 'rollup-plugin-dts'
+import esbuild from 'rollup-plugin-esbuild'
 
 const pkg = require('./package.json')
 const license = require('rollup-plugin-license')
@@ -41,34 +39,101 @@ const globals = {
 }
 
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
-const injectVueDemi = () => ({
+
+const injectVueDemi = ( es = true ) => ({
   name: 'inject-vue-demi',
   renderChunk(code) {
-    return `${VUE_DEMI_IIFE};\n;${code}`
+    return `${VUE_DEMI_IIFE};\n${code}`
   },
 })
 
-export default {
-  input : 'src/index.ts',
-  output: [
-    {
-      name   : 'vueOutsideEvents',
-      format : 'umd',
-      file   : 'dist/vue-outside-events.min.js',
-      exports: 'named',
-      globals,
-    },
-  ],
-  external,
-  
-  plugins: [
-    injectVueDemi(),
-    typescript(),
-    nodeResolve(),
-    //terser(),
-    filesize(),
-    license({
-      banner
-    })
-  ]
+const esbuildPlugin = esbuild()
+const dtsPlugin = [ dts() ]
+
+const esbuildMinifer = (options) => {
+  const { renderChunk } = esbuild(options)
+
+  return {
+    name: 'esbuild-minifer',
+    renderChunk,
+  }
 }
+
+const commonPlugins = [
+  license({
+    banner
+  })
+]
+
+const input = 'src/index.ts';
+const configs = [{
+  input,
+  output: [{
+    name   : 'vueOutsideEvents',
+    format : 'umd',
+    file   : 'dist/vue-outside-events.umd.js',
+    exports: 'named',
+    globals,
+    plugins: [
+      injectVueDemi(false)
+    ]
+  }, {
+    name   : 'vueOutsideEvents',
+    format : 'umd',
+    file   : 'dist/vue-outside-events.umd.min.js',
+    exports: 'named',
+    globals,
+    plugins: [
+      injectVueDemi(false),
+      esbuildMinifer({
+        minify: true,
+      })
+    ]
+  }],
+  external,
+  plugins: [
+    esbuildPlugin,
+    ...commonPlugins
+  ]
+},
+{
+  input,
+  output: [{
+    name   : 'vue-outside-events',
+    format : 'es',
+    file   : 'dist/vue-outside-events.js',
+    exports: 'named',
+    plugins: [
+     
+    ]
+  }, {
+    name   : 'vue-outside-events',
+    format : 'es',
+    file   : 'dist/vue-outside-events.min.js',
+    exports: 'named',
+    plugins: [
+      esbuildMinifer({
+        minify: true,
+      })
+    ]
+  }],
+  external,
+  plugins: [
+    esbuildPlugin,
+    ...commonPlugins
+  ]
+},
+{
+  input,
+  output: [{
+    file: `dist/vue-outside-events.d.ts`,
+    format: 'es',
+  }],
+  external,
+  plugins: [
+    ...dtsPlugin,
+    ...commonPlugins
+  ]
+}];
+
+export default configs;

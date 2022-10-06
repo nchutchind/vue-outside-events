@@ -7,7 +7,7 @@
 	<link href="../theme.css" type="text/css" rel="stylesheet" />
 	<script src="../syntaxhighlighter.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@3.2.40/dist/vue.global.prod.js" type="text/javascript"></script>
-	<script src="../../dist/vue-outside-events.min.js" type="text/javascript"></script>
+	<script src="../../dist/vue-outside-events.umd.min.js" type="text/javascript"></script>
 	<script
 		src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
@@ -60,7 +60,7 @@
 				.text( ' ' );
 		}, { capture: true });
 
-		const { blurOutsideName, vBlurOutside, useBlurOutside } = vueOutsideEvents;
+		const { blurOutsideName, vBlurOutside, onBlurOutside } = vueOutsideEvents;
 		const { createApp, ref } = Vue;
 
 		createApp({
@@ -79,10 +79,10 @@
 						.text( text );
 				}
 
-				useBlurOutside(f, (e, el, extras) => onEventOutside(e, el, extras))
-				useBlurOutside(g, (e, el, extras) => onEventOutside(e, el, extras))
-				useBlurOutside(h, (e, el, extras) => onEventOutside(e, el, extras))
-				useBlurOutside(i, (e, el, extras) => onEventOutside(e, el, extras))
+				onBlurOutside(f, (e, el, extras) => onEventOutside(e, el, extras))
+				onBlurOutside(g, (e, el, extras) => onEventOutside(e, el, extras))
+				onBlurOutside(h, (e, el, extras) => onEventOutside(e, el, extras))
+				onBlurOutside(i, (e, el, extras) => onEventOutside(e, el, extras))
 
 				return { f,g,h,i, onEventOutside }
 			},
